@@ -1,12 +1,25 @@
 (function () {
-  if (!window.location.pathname.includes("/cart")) return;
+  // Wait until the drawer is present in the DOM
+  function waitForDrawerAndInject() {
+    const drawer = document.querySelector("#CartDrawer .drawer__footer");
+    if (!drawer) {
+      return setTimeout(waitForDrawerAndInject, 200); // keep checking
+    }
 
-  const msg = document.createElement("div");
-  msg.style.padding = "20px";
-  msg.style.backgroundColor = "#f5f5f5";
-  msg.innerHTML = `
-    <h2>Saved for Later</h2>
-    <p>This is where saved items will be shown.</p>
-  `;
-  document.body.appendChild(msg);
+    // Avoid duplicate injection
+    if (document.querySelector("#swym-sic-container")) return;
+
+    const container = document.createElement("div");
+    container.id = "swym-sic-container";
+    container.style.padding = "16px";
+    container.style.borderTop = "1px solid #ccc";
+    container.innerHTML = `
+      <h4 style="margin: 0 0 8px 0;">Saved for Later</h4>
+      <p>This is where saved items will be shown.</p>
+    `;
+
+    drawer.parentNode.insertBefore(container, drawer);
+  }
+
+  waitForDrawerAndInject();
 })();
