@@ -1,3 +1,4 @@
+console.log("✅ Saved items script loaded");
 (async function () {
   // 1. Wait for drawer
   function waitForDrawer() {
