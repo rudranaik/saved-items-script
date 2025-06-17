@@ -14,7 +14,7 @@
   function injectSavedItems(footer) {
     console.log("🧩 Trying Swym SDK to fetch wishlist");
 
-    _swat.fetchLists({
+    swat.fetchLists({
       callbackFn: function (lists) {
         if (!lists || lists.length === 0) {
           console.log("😶 No wishlists found");
@@ -24,7 +24,7 @@
         const listId = lists[0].lid;
         console.log("📦 First wishlist ID:", listId);
 
-        _swat.fetchListCtx(
+        swat.fetchListCtx(
           { lid: listId },
           function (items) {
             console.log("💖 Wishlist items:", items);
