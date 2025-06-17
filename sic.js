@@ -1,6 +1,6 @@
-console.log("✅ Saved items script loaded");
 (async function () {
-  // 1. Wait for drawer
+  console.log("✅ Swym Saved Items script loaded");
+
   function waitForDrawer() {
     const footer = document.querySelector("#CartDrawer .drawer__footer");
     if (!footer) return setTimeout(waitForDrawer, 200);
@@ -11,29 +11,29 @@ console.log("✅ Saved items script loaded");
 
   waitForDrawer();
 
-  // 2. Main function
   async function injectSavedItems(footer) {
+    console.log("🧩 Injecting saved items section...");
+
     try {
-      // 2.1 Get cart variant IDs
       const cartRes = await fetch("/cart.js");
       const cart = await cartRes.json();
       const cartVariantIds = new Set(cart.items.map(item => item.variant_id));
+      console.log("🛒 Cart variant IDs:", [...cartVariantIds]);
 
-      // 2.2 Get wishlist items
       const res = await fetch("https://api.swym.it/v3/user/wishlist", {
         credentials: "include",
         headers: { "Content-Type": "application/json" }
       });
+
       const data = await res.json();
+      console.log("💖 Wishlist data:", data);
+
       const items = (data.items || []).filter(
-        item => !cartVariantIds.has(Number(item.epi)) // exclude already in cart
-      console.log("🛒 Cart contents", cart);
-      console.log("💖 Wishlist items", data.items);
+        item => !cartVariantIds.has(Number(item.epi))
       );
 
-      if (items.length === 0) return; // nothing to show
+      if (items.length === 0) return;
 
-      // 2.3 Build UI
       const container = document.createElement("div");
       container.id = "swym-sic-container";
       container.style.padding = "16px";
@@ -55,7 +55,6 @@ console.log("✅ Saved items script loaded");
 
       footer.parentNode.insertBefore(container, footer);
 
-      // 2.4 Add-to-cart logic
       window.addToCartFromWishlist = function (variantId) {
         fetch("/cart/add.js", {
           method: "POST",
@@ -64,4 +63,7 @@ console.log("✅ Saved items script loaded");
         }).then(() => location.reload());
       };
     } catch (err) {
-      consol
+      console.error("🔥 Error rendering saved items:", err);
+    }
+  }
+})();
