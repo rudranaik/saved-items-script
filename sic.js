@@ -27,6 +27,8 @@ console.log("✅ Saved items script loaded");
       const data = await res.json();
       const items = (data.items || []).filter(
         item => !cartVariantIds.has(Number(item.epi)) // exclude already in cart
+      console.log("🛒 Cart contents", cart);
+      console.log("💖 Wishlist items", data.items);
       );
 
       if (items.length === 0) return; // nothing to show
